@@ -20,7 +20,8 @@ Module.register("MMM-PublicTransportDB", {
         maxReachableDepartures: 7,          // How many reachable departures should be shown?
         fadeUnreachableDepartures: true,
         fadeReachableDepartures: true,
-        fadePointForReachableDepartures: 0.25
+        fadePointForReachableDepartures: 0.25,
+		showTableHeaders: true  // Want to show table headers?
     },
 
     start: function () {
@@ -97,14 +98,16 @@ Module.register("MMM-PublicTransportDB", {
             // Cell for line symbol
             let headerLine = document.createElement("td");
 
-            if (this.config.showTableHeadersAsSymbols) {
-                headerLine.className = "centeredTd";
-                let lineIcon = document.createElement("span");
-                lineIcon.className = "fa fa-tag";
-                headerLine.appendChild(lineIcon);
-            } else {
-                headerLine.innerHTML = "Linie";
-            }
+			if (this.config.showTableHeaders) {
+				if (this.config.showTableHeadersAsSymbols) {
+					headerLine.className = "centeredTd";
+					let lineIcon = document.createElement("span");
+					lineIcon.className = "fa fa-tag";
+					headerLine.appendChild(lineIcon);
+				} else {
+					headerLine.innerHTML = "Linie";
+				}
+			}
 
             headerRow.appendChild(headerLine);
 
