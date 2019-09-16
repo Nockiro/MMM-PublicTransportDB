@@ -1,5 +1,6 @@
 "use strict";
-const dbClient = require('db-hafas');
+const createClient = require('db-hafas');
+const dbClient = createClient('MagicMirror-Module/Coburn84');
 
 let DbFetcher = function (config) {
     this.config = config;
@@ -67,7 +68,7 @@ DbFetcher.prototype.processData = function (data) {
 	for (let row of data) {
 
         //if (!this.config.ignoredStations.includes(row.station.id)) {
-        if (!this.config.ignoredStations.includes(row.station.id) && this.config.excludedTransportationTypes.search(row.line.mode) == -1) {
+        if (!this.config.ignoredStations.includes(row.stop.id) && this.config.excludedTransportationTypes.search(row.line.mode) == -1) {
             //console.log('Parsing: ' + row.line.name + ' nach ' + row.direction + ' um ' + row.when);
 
             let delay = row.delay;
@@ -163,7 +164,7 @@ function printDeparture(row) {
 
     let time = row.when.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-    console.log(time + " " + delayMinutes + " " + row.product.type.unicode + " " + row.direction + " | stationId: " + row.station.id);
+    console.log(time + " " + delayMinutes + " " + row.product.type.unicode + " " + row.direction + " | stopId: " + row.stop.id);
 }
 
 module.exports = DbFetcher;
