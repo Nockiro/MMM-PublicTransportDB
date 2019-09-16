@@ -8,6 +8,7 @@ Module.register("MMM-PublicTransportDB", {
         ignoredStations: [],                // Which stations should be ignored? (comma-separated list of station IDs)
         excludedTransportationTypes: '',    // Which transportation types should not be shown on the mirror? (comma-separated list of types) possible values: bus,tram,suburban,subway,ferry
         direction: null,                    // Which direction should be displayed? (destination station ID)
+        directions: null,                   // Merges/Shows multiple directions (array of station ID strings)
         marqueeLongDirections: true,
         delay: 10,                          // How long do you need to walk to the next Station?
         interval: 120000,                   // How often should the table be updated in ms?
@@ -21,7 +22,7 @@ Module.register("MMM-PublicTransportDB", {
         fadeUnreachableDepartures: true,
         fadeReachableDepartures: true,
         fadePointForReachableDepartures: 0.25,
-		showTableHeaders: true  // Want to show table headers?
+        showTableHeaders: true  // Want to show table headers?
     },
 
     start: function () {

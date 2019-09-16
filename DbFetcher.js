@@ -21,6 +21,14 @@ let typeData = {
     }
 }
 
+Object.defineProperty(Array.prototype, 'flat', {
+    value: function(depth = 1) {
+      return this.reduce(function (flat, toFlatten) {
+        return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+      }, []);
+    }
+});
+
 DbFetcher.prototype.getStationId = function () {
     return this.config.stationId;
 };
@@ -46,17 +54,34 @@ DbFetcher.prototype.fetchDepartures = function () {
     if (this.config.direction) {
         direction = this.config.direction;
     }
+	
+	var promiseList = [];
+    var destinationInfo = [];
 
-    var opt = {
-        when: when,
-        duration: this.config.departureMinutes,
-        direction: direction
-    };
+    var destinations = this.config.directions ? this.config.directions : [ direction ];
 
-    return dbClient.departures(this.config.stationId, opt).then((response) => {
-		//console.log(require('util').inspect(response, {depth: null}));
-        return this.processData(response);
-    });
+
+    for (let destinationStationId of destinations) {
+        var opt = {
+            when: when,
+            duration: this.config.departureMinutes,
+            direction: destinationStationId
+        };
+
+        promiseList.push(
+			dbClient.departures(this.config.stationId, opt).then((response) => { return this.processData(response); })
+		)
+    }
+
+    return Promise.all(promiseList).then(
+        function(results) {
+			var totalData = {
+                stationId: results[0].stationId,
+                departuresArray: results.map(function(departureDataPart) { return departureDataPart.departuresArray; }).flat(1)
+			}
+			return totalData;
+        }
+	)
 };
 
 DbFetcher.prototype.processData = function (data) {
