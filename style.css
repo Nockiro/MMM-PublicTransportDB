@@ -39,6 +39,8 @@
 
 .directionCell {
     max-width: 32ch;
+	padding-left: 8px;
+
 }
 
 .marquee {
@@ -111,7 +113,8 @@
     text-align: center;
     width: 2.5em;
     height: 1.25em;
-    background: #BE1414;
+    border: gray 1px solid;
+    border-radius: 14px;
     position: relative;
 }
 
@@ -128,7 +131,8 @@
     text-align: center;
     width: 4.5em;
     height: 1.25em;
-    background: #BE1414;
+    border: gray 1px solid;
+    border-radius: 14px;
     position: relative;
 }
 
