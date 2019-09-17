@@ -69,19 +69,20 @@ DbFetcher.prototype.fetchDepartures = function () {
         };
 
         promiseList.push(
-			dbClient.departures(this.config.stationId, opt).then((response) => { return this.processData(response); })
-		)
+		dbClient.departures(this.config.stationId, opt).then((response) => { return this.processData(response); })
+	)
     }
 
     return Promise.all(promiseList).then(
         function(results) {
-			var totalData = {
-                stationId: results[0].stationId,
-                departuresArray: results.map(function(departureDataPart) { return departureDataPart.departuresArray; }).flat(1)
-			}
-			return totalData;
-        }
-	)
+		var totalData = {
+			stationId: results[0].stationId,
+			departuresArray: results.map(function(departureDataPart) { return departureDataPart.departuresArray; }).flat(1)
+		}
+		totalData.departuresArray.sort(compare);
+		return totalData;
+	}
+    )
 };
 
 DbFetcher.prototype.processData = function (data) {
@@ -170,8 +171,8 @@ DbFetcher.prototype.processData = function (data) {
 function compare(a, b) {
 
     // delay must be converted to milliseconds
-    let timeA = a.when.getTime() + a.delay * 1000;
-    let timeB = b.when.getTime() + b.delay * 1000;
+    let timeA = new Date(a.when).getTime() + a.delay * 1000;
+    let timeB = new Date(b.when).getTime() + b.delay * 1000;
 
     if (timeA < timeB) {
         return -1;
