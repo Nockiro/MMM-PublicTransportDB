@@ -118,10 +118,13 @@ DbFetcher.prototype.processData = function (data) {
                 //type: productType.type,
                 type: row.line.product,
                 color: productType.color,
-                direction: row.direction
+                direction: row.direction,
+                canceled: row.canceled ? row.canceled : false
             };
 
-            //console.log(current);
+            if (current.canceled) {
+                current.when = row.scheduledWhen;
+            }
 
             departuresData.departuresArray.push(current);
         }

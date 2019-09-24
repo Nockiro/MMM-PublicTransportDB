@@ -28,6 +28,11 @@
     width: 1em;
 }
 
+.canceled {
+    color: red;
+    text-decoration: line-through;
+}
+
 .delayTimeCell {
     font-size: 16px;
     padding-left: 3px;

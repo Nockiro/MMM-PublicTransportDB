@@ -239,7 +239,16 @@ Module.register("MMM-PublicTransportDB", {
         let row = document.createElement("tr");
 
         let timeCell = document.createElement("td");
-        timeCell.className = "centeredTd timeCell bright";
+        timeCell.className = "centeredTd timeCell";
+
+        if (current.canceled) {
+            timeCell.className += " canceled";
+        } else {
+            timeCell.className += " bright";
+        }
+
+        // in this module, currentWhen also has the time if the api returned it as "formerScheduledWhen"
+
         timeCell.innerHTML = currentWhen.format("HH:mm");
         row.appendChild(timeCell);
 
